@@ -1,0 +1,50 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <link rel="stylesheet" href="style/style.css">
+      <script src="https://kit.fontawesome.com/c939d0e917.js
+      "></script>
+      <title>Epic google maps app</title>
+  </head>
+  <body>
+      <div class="title">store locator</div>
+      <div class="search-container">
+          <div class="search">
+              <input id="zip-code-input" type="text" placeholder="Enter zip">
+              <i class="fas fa-search" onclick="searchStores()"></i>
+              
+          </div>
+      </div>
+
+      <div class="store-list-container">
+          <div class="store-list">
+              <div class="store-container">
+                  <div class="store-info-container">
+                    <div class="store-address">
+                        <span>8480 Beverly Blvd</span> 
+                        <span>Los Angeles, CA 90048</span> 
+                      </div>
+                      <div class="store-phone-number">
+                          332-356-1459
+                      </div>
+                  </div>
+                  <div class="store-number-container">
+                      <div class="store-number">
+                          1
+                      </div>
+                  </div>
+                </div>
+            </div>
+        </div>                 
+
+      <div id="map"></div>
+      <div id="infoWindow"></div>
+      <script src="js/store-data.js"></script>
+      <script src="js/index.js"></script>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAB_lsVyphzncctp5xDx1Sew1UKeiFIvRo&callback=initMap"
+       async defer></script>
+    </body>
+</html>
