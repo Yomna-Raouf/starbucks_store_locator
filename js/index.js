@@ -4,6 +4,7 @@ var infoWindow;
  
  window.onload = () => {
     initMap();
+    displayStores();
  }
 
 
@@ -68,7 +69,7 @@ function setOnClickListener() {
     })
 }
 
-function displayStores(stores) {
+function displayStores() {
     var storesHtml = '';
     for(var [index,store] of stores.entries()) {
         var address = store['addressLines'];
@@ -112,7 +113,7 @@ function showStoresMarkers(stores) {
         createMarker(latlng, name, address, openStatus, phoneNumber, ++index);
     }
     map.fitBounds(bounds);
-}
+} 
 
 function createMarker(latlng, name, address,openStatus, phoneNumber, index) {
     var html = `
@@ -144,12 +145,21 @@ function createMarker(latlng, name, address,openStatus, phoneNumber, index) {
                 </div>
         </div>
     `;
-    var marker = new google.maps.Marker({
+    var marker = map.addLayer({
+        'id': 'places',
+        'type': 'symbol',
+        'source': 'places',
+        'layout': {
+        'icon-image': "pin-6-48.ico",
+        'icon-allow-overlap': true
+        }
+    });
+   /* var marker = new google.maps.Marker({
       map: map,
       position: latlng,
      // label: index.toString(),
       icon:"pin-6-48.ico"
-    });
+    });*/
     google.maps.event.addListener(marker, 'click', function() {
       infoWindow.setContent(html);
       infoWindow.open(map, marker);
