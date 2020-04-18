@@ -2,15 +2,19 @@
   <html lang="en">
   <head>
       <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="viewport" content="width=device-width, initial-scale=0.8">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <link rel="stylesheet" href="style/style.css">
       <script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
       <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
       <script src="https://kit.fontawesome.com/c939d0e917.js
       "></script>
+<<<<<<< HEAD
       <link rel="shortcut icon" type="image/x-icon" href="starbucks.png" />
       <title>Epic google maps app</title>
+=======
+      <title>Starbucks Store Locator</title>
+>>>>>>> 81c84c9b87561c8f3a701a4f8381b8d5578fab7f
   </head>
   <body>
       <div class="title">store locator</div>
@@ -47,5 +51,12 @@
       <div id="infoWindow"></div>
       <script src="js/store-data.js"></script>
       <script src="js/index.js"></script>
+      <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoieW9tbmEtcmFvdWYiLCJhIjoiY2s5MnY1MTJqMDNqMTNkdXJvbTEybm9jNiJ9.Ptr2DKynFUQVoaNYN-6uqA';
+        var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11'
+        });
+      </script>
     </body>
 </html>
