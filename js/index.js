@@ -1,9 +1,26 @@
 var map;
 var markers = [];
 var infoWindow;
+ 
+ window.onload = () => {
+    initMap();
+ }
+
 
 function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoieW9tbmEtcmFvdWYiLCJhIjoiY2s5MnY1MTJqMDNqMTNkdXJvbTEybm9jNiJ9.Ptr2DKynFUQVoaNYN-6uqA';
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [ 34.063380, -118.358080], // starting position
+        zoom: 9 // starting zoom
+    });
+     
+    // Add zoom and rotation controls to the map.
+    map.addControl(new mapboxgl.NavigationControl());
+
+   /* map = new google.maps.Map(document.getElementById('map'), {
     center: {
         lat: 34.063380,
         lng: -118.358080
@@ -12,7 +29,7 @@ function initMap() {
     MapTypeId: "ROADMAP",
     });
     infoWindow = new google.maps.InfoWindow();
-    searchStores();
+    searchStores();*/
 }
 
 function searchStores() {
