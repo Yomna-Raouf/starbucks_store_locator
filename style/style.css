@@ -151,11 +151,14 @@ body {
     justify-content: center;
     align-items: center;
 }
-
-.store-info-window {
+.mapboxgl-popup {
+    min-width: 400px;
+}
+.store-info-window, .mapboxgl-popup-content {
     min-width: 300px;
     font-size: 18px;
     padding: 7px;
+    border-radius: 40px;
 }
 
 .store-info-name {

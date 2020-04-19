@@ -53,10 +53,18 @@ function clearLocations() {
     markers.length = 0;
 }
 
+function flyToStore(currentFeature) {
+  map.flyTo({
+    center: lnglat,
+    zoom: 15
+  });
+}
+
 function setOnClickListener() {
     var storeElements = document.querySelectorAll(".store-container");
     storeElements.forEach(function(element, index) {
         element.addEventListener('click', function(){
+            flyToStore(); //adding lnglat
             new google.maps.event.trigger(markers[index], 'click');
         })
     })
@@ -139,25 +147,16 @@ function createMarker(map, lnglat, name, address,openStatus, phoneNumber, index)
                 </div>
         </div>
     `;
-     var marker = new mapboxgl.Marker({
+
+     var popup = new mapboxgl.Popup({ closeOnClick: true })
+    .setHTML(html)
+    .addTo(map);
+
+    var marker = new mapboxgl.Marker({
             color:"green",
         })
         .setLngLat(lnglat)
+        .setPopup(popup)
         .addTo(map);
-    
-     
-
-   /* var marker = new google.maps.Marker({
-      map: map,
-      position: latlng,
-     // label: index.toString(),
-      icon:"pin-6-48.ico"
-    });*/
-  /*  google.maps.event.addListener(marker, 'click', function() {
-      infoWindow.setContent(html);
-      infoWindow.open(map, marker);
-    }); */
-   /*markers.push(marker);*/
-
 }
 
