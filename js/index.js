@@ -1,15 +1,7 @@
-var map;
-var markers = [];
-var infoWindow;
+var marker = [];
+
  
- window.onload = () => {
-    initMap();
-    displayStores();
- }
-
-
-function initMap() {
-
+    displayStores(stores);
     mapboxgl.accessToken = 'pk.eyJ1IjoieW9tbmEtcmFvdWYiLCJhIjoiY2s5MnY1MTJqMDNqMTNkdXJvbTEybm9jNiJ9.Ptr2DKynFUQVoaNYN-6uqA';
     var map = new mapboxgl.Map({
         container: 'map', // container id
@@ -17,9 +9,10 @@ function initMap() {
         center: [ -118.358080, 34.063380 ], // starting position
         zoom: 9 // starting zoom
     });
-     
+      
     // Add zoom and rotation controls to the map.
     map.addControl(new mapboxgl.NavigationControl());
+    showStoresMarkers(map);
 
    /* map = new google.maps.Map(document.getElementById('map'), {
     center: {
@@ -31,7 +24,7 @@ function initMap() {
     });
     infoWindow = new google.maps.InfoWindow();
     searchStores();*/
-}
+
 
 function searchStores() {
     var fouundStores = [];
@@ -69,7 +62,7 @@ function setOnClickListener() {
     })
 }
 
-function displayStores() {
+function displayStores(stores) {
     var storesHtml = '';
     for(var [index,store] of stores.entries()) {
         var address = store['addressLines'];
@@ -99,23 +92,24 @@ function displayStores() {
     }
 }
 
-function showStoresMarkers(stores) {
-    var bounds = new google.maps.LatLngBounds();
+function showStoresMarkers(map) {
+   /* var bounds = new google.maps.LatLngBounds();*/
     for(var [index,store] of stores.entries()) { 
-        var latlng = new google.maps.LatLng(
-            store["coordinates"]["latitude"],
-            store["coordinates"]["longitude"]);
+        var lnglat = [
+            store["coordinates"]["longitude"],
+            store["coordinates"]["latitude"]
+        ];  
         var name = store["name"];
         var address = store["addressLines"][0];
         var openStatus = store["openStatusText"];
         var phoneNumber = store["phoneNumber"];
-        bounds.extend(latlng);
-        createMarker(latlng, name, address, openStatus, phoneNumber, ++index);
+        /*bounds.extend(latlng);*/
+        createMarker(map, lnglat, name, address, openStatus, phoneNumber, ++index);
     }
-    map.fitBounds(bounds);
+   /* map.fitBounds(bounds);*/
 } 
 
-function createMarker(latlng, name, address,openStatus, phoneNumber, index) {
+function createMarker(map, lnglat, name, address,openStatus, phoneNumber, index) {
     var html = `
         <div class="store-info-window">
                 <div class="store-info-info">
@@ -145,25 +139,25 @@ function createMarker(latlng, name, address,openStatus, phoneNumber, index) {
                 </div>
         </div>
     `;
-    var marker = map.addLayer({
-        'id': 'places',
-        'type': 'symbol',
-        'source': 'places',
-        'layout': {
-        'icon-image': "pin-6-48.ico",
-        'icon-allow-overlap': true
-        }
-    });
+     var marker = new mapboxgl.Marker({
+            color:"green",
+        })
+        .setLngLat(lnglat)
+        .addTo(map);
+    
+     
+
    /* var marker = new google.maps.Marker({
       map: map,
       position: latlng,
      // label: index.toString(),
       icon:"pin-6-48.ico"
     });*/
-    google.maps.event.addListener(marker, 'click', function() {
+  /*  google.maps.event.addListener(marker, 'click', function() {
       infoWindow.setContent(html);
       infoWindow.open(map, marker);
-    }); 
-    markers.push(marker);
+    }); */
+   /*markers.push(marker);*/
+
 }
 
