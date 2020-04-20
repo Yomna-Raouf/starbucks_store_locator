@@ -11,10 +11,6 @@ body {
     width: 100%;
   }
 
-  
-
-
-
 .title {
     position: absolute;
     z-index: 100;
@@ -25,8 +21,6 @@ body {
     top: 100px;
     left:100px;    
 }
-
-
 
 .search-container {
     position: absolute;
@@ -154,6 +148,7 @@ body {
 .mapboxgl-popup {
     min-width: 400px;
 }
+
 .store-info-window, .mapboxgl-popup-content {
     min-width: 300px;
     font-size: 18px;

@@ -64,7 +64,7 @@ function setOnClickListener() {
     var storeElements = document.querySelectorAll(".store-container");
     storeElements.forEach(function(element, index) {
         element.addEventListener('click', function(){
-            flyToStore(); //adding lnglat
+            flyToStore(); //adding lnglat map.flyTo({center: [Lat, Lng]})
             new google.maps.event.trigger(markers[index], 'click');
         })
     })
@@ -101,7 +101,7 @@ function displayStores(stores) {
 }
 
 function showStoresMarkers(map) {
-   /* var bounds = new google.maps.LatLngBounds();*/
+    var bounds = new mapboxgl.LngLatBounds();
     for(var [index,store] of stores.entries()) { 
         var lnglat = [
             store["coordinates"]["longitude"],
@@ -111,10 +111,10 @@ function showStoresMarkers(map) {
         var address = store["addressLines"][0];
         var openStatus = store["openStatusText"];
         var phoneNumber = store["phoneNumber"];
-        /*bounds.extend(latlng);*/
+        bounds.extend(lnglat);
+        map.fitBounds(bounds);
         createMarker(map, lnglat, name, address, openStatus, phoneNumber, ++index);
-    }
-   /* map.fitBounds(bounds);*/
+    }   
 } 
 
 function createMarker(map, lnglat, name, address,openStatus, phoneNumber, index) {
@@ -147,7 +147,7 @@ function createMarker(map, lnglat, name, address,openStatus, phoneNumber, index)
                 </div>
         </div>
     `;
-
+   
      var popup = new mapboxgl.Popup({ closeOnClick: true })
     .setHTML(html)
     .addTo(map);
