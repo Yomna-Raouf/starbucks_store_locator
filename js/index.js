@@ -1,7 +1,6 @@
-var marker = [];
-
- 
-    displayStores(stores);
+var markers = [];
+var lnglats = [];
+    displayStores();
     mapboxgl.accessToken = 'pk.eyJ1IjoieW9tbmEtcmFvdWYiLCJhIjoiY2s5MnY1MTJqMDNqMTNkdXJvbTEybm9jNiJ9.Ptr2DKynFUQVoaNYN-6uqA';
     var map = new mapboxgl.Map({
         container: 'map', // container id
@@ -9,11 +8,10 @@ var marker = [];
         center: [ -118.358080, 34.063380 ], // starting position
         zoom: 9 // starting zoom
     });
-      
     // Add zoom and rotation controls to the map.
     map.addControl(new mapboxgl.NavigationControl());
     showStoresMarkers(map);
-
+    setOnClickListener();
    /* map = new google.maps.Map(document.getElementById('map'), {
     center: {
         lat: 34.063380,
@@ -24,7 +22,6 @@ var marker = [];
     });
     infoWindow = new google.maps.InfoWindow();
     searchStores();*/
-
 
 function searchStores() {
     var fouundStores = [];
@@ -53,7 +50,7 @@ function clearLocations() {
     markers.length = 0;
 }
 
-function flyToStore(currentFeature) {
+function flyToStore(lnglat) {
   map.flyTo({
     center: lnglat,
     zoom: 15
@@ -64,13 +61,15 @@ function setOnClickListener() {
     var storeElements = document.querySelectorAll(".store-container");
     storeElements.forEach(function(element, index) {
         element.addEventListener('click', function(){
-            flyToStore(); //adding lnglat map.flyTo({center: [Lat, Lng]})
-            new google.maps.event.trigger(markers[index], 'click');
+        flyToStore(lnglats[index]);  
+                   // store["coordinates"]["longitude"][index],
+                  //  store[index]["coordinates"]["latitude"]
+        new google.maps.event.trigger(markers[index], 'click');
         })
     })
 }
 
-function displayStores(stores) {
+function displayStores() {
     var storesHtml = '';
     for(var [index,store] of stores.entries()) {
         var address = store['addressLines'];
@@ -113,6 +112,7 @@ function showStoresMarkers(map) {
         var phoneNumber = store["phoneNumber"];
         bounds.extend(lnglat);
         map.fitBounds(bounds);
+        lnglats.push(lnglat);
         createMarker(map, lnglat, name, address, openStatus, phoneNumber, ++index);
     }   
 } 
@@ -158,5 +158,5 @@ function createMarker(map, lnglat, name, address,openStatus, phoneNumber, index)
         .setLngLat(lnglat)
         .setPopup(popup)
         .addTo(map);
+    markers.push(marker);
 }
-
