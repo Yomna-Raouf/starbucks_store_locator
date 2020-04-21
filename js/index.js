@@ -1,14 +1,15 @@
 var markers = [];
 var lnglats = [];
+var popUps = [];
     displayStores();
     mapboxgl.accessToken = 'pk.eyJ1IjoieW9tbmEtcmFvdWYiLCJhIjoiY2s5MnY1MTJqMDNqMTNkdXJvbTEybm9jNiJ9.Ptr2DKynFUQVoaNYN-6uqA';
     var map = new mapboxgl.Map({
-        container: 'map', // container id
+        container: 'map', 
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [ -118.358080, 34.063380 ], // starting position
-        zoom: 9 // starting zoom
+        center: [ -118.358080, 34.063380 ], 
+        zoom: 9 
     });
-    // Add zoom and rotation controls to the map.
+
     map.addControl(new mapboxgl.NavigationControl());
     showStoresMarkers(map);
     setOnClickListener();
@@ -50,23 +51,21 @@ function clearLocations() {
     markers.length = 0;
 }
 
-function flyToStore(lnglat) {
-  map.flyTo({
-    center: lnglat,
-    zoom: 15
-  });
-}
-
 function setOnClickListener() {
     var storeElements = document.querySelectorAll(".store-container");
     storeElements.forEach(function(element, index) {
         element.addEventListener('click', function(){
         flyToStore(lnglats[index]);  
-                   // store["coordinates"]["longitude"][index],
-                  //  store[index]["coordinates"]["latitude"]
-        new google.maps.event.trigger(markers[index], 'click');
+        popUps[index].addTo(map);
         })
     })
+}
+
+function flyToStore(lnglat) {
+  map.flyTo({
+    center: lnglat,
+    zoom: 15
+  });
 }
 
 function displayStores() {
@@ -148,9 +147,9 @@ function createMarker(map, lnglat, name, address,openStatus, phoneNumber, index)
         </div>
     `;
    
-     var popup = new mapboxgl.Popup({ closeOnClick: true })
-    .setHTML(html)
-    .addTo(map);
+    var popup = new mapboxgl.Popup({ closeOnClick: true })
+        .setHTML(html)
+        .addTo(map);
 
     var marker = new mapboxgl.Marker({
             color:"green",
@@ -159,4 +158,5 @@ function createMarker(map, lnglat, name, address,openStatus, phoneNumber, index)
         .setPopup(popup)
         .addTo(map);
     markers.push(marker);
+    popUps.push(popup);
 }
