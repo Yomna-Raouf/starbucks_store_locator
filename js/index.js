@@ -1,7 +1,7 @@
 var markers = [];
 var lnglats = [];
 var popUps = [];
-    displayStores();
+
     mapboxgl.accessToken = 'pk.eyJ1IjoieW9tbmEtcmFvdWYiLCJhIjoiY2s5MnY1MTJqMDNqMTNkdXJvbTEybm9jNiJ9.Ptr2DKynFUQVoaNYN-6uqA';
     var map = new mapboxgl.Map({
         container: 'map', 
@@ -9,44 +9,33 @@ var popUps = [];
         center: [ -118.358080, 34.063380 ], 
         zoom: 9 
     });
-
     map.addControl(new mapboxgl.NavigationControl());
-    showStoresMarkers(map);
-    setOnClickListener();
-   /* map = new google.maps.Map(document.getElementById('map'), {
-    center: {
-        lat: 34.063380,
-        lng: -118.358080
-    },
-    zoom: 8,
-    MapTypeId: "ROADMAP",
-    });
-    infoWindow = new google.maps.InfoWindow();
-    searchStores();*/
+    searchStores();
 
 function searchStores() {
-    var fouundStores = [];
+    var foundStores = [];
     var zipCode = document.getElementById('zip-code-input').value;
     if(zipCode){
         for(var store of stores) {
             var postal = store['address']['postalCode'].substring(0, 5);
             if(postal === zipCode ) {
-                fouundStores.push(store);
+                foundStores.push(store);
             }
          }
     } else {
-        fouundStores = stores;
+        foundStores = stores;
     } 
     clearLocations();
-    displayStores(fouundStores);
-    showStoresMarkers(fouundStores);
+    displayStores(foundStores);
+    showStoresMarkers(map, foundStores);
     setOnClickListener();
 }
 
 function clearLocations() {
-    infoWindow.close();
+    popUps = [];
+    lnglats = []; //new
     for (var i = 0; i < markers.length; i++) {
-      markers[i].setMap(null);
+      markers[i]=[];
     }
     markers.length = 0;
 }
@@ -68,7 +57,7 @@ function flyToStore(lnglat) {
   });
 }
 
-function displayStores() {
+function displayStores(stores) {
     var storesHtml = '';
     for(var [index,store] of stores.entries()) {
         var address = store['addressLines'];
@@ -98,13 +87,13 @@ function displayStores() {
     }
 }
 
-function showStoresMarkers(map) {
+function showStoresMarkers(map, stores) {
     var bounds = new mapboxgl.LngLatBounds();
     for(var [index,store] of stores.entries()) { 
         var lnglat = [
             store["coordinates"]["longitude"],
             store["coordinates"]["latitude"]
-        ];  
+            ];  
         var name = store["name"];
         var address = store["addressLines"][0];
         var openStatus = store["openStatusText"];
@@ -147,9 +136,11 @@ function createMarker(map, lnglat, name, address,openStatus, phoneNumber, index)
         </div>
     `;
    
-    var popup = new mapboxgl.Popup({ closeOnClick: true })
+    var popup = new mapboxgl.Popup({ closeOnClick: true, })
         .setHTML(html)
         .addTo(map);
+
+     
 
     var marker = new mapboxgl.Marker({
             color:"green",
@@ -157,6 +148,7 @@ function createMarker(map, lnglat, name, address,openStatus, phoneNumber, index)
         .setLngLat(lnglat)
         .setPopup(popup)
         .addTo(map);
+
     markers.push(marker);
     popUps.push(popup);
 }
